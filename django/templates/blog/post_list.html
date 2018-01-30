@@ -6,22 +6,25 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>DjangoGirls Tutoral</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/blog.css">
 </head>
 <body>
-    <div>
-        <h1><a href="">Django Girls Blog</a></h1>
+    <div class="container">
+        <div>
+            <h1><a href="">Django Girls Blog</a></h1>
+            {% for post in posts %}
+            <div>{{ post.title }}</div>
+            {% endfor %}
+        </div>
+
         {% for post in posts %}
-        <div>{{ post.title }}</div>
+        <div>
+            <p>published: {{ post.published_data }}</p>
+            <h2><a href="">{{ post.title }} </a></h2>
+            <p>{{ post.content | linebreaksbr | truncatewords:30 }}</p>
+        </div>
         {% endfor %}
     </div>
-
-    {% for post in posts %}
-    <div>
-        <p>published: {{ post.published_data }}</p>
-        <h2><a href="">{{ post.title }} </a></h2>
-        <p>{{ post.content | linebreaksbr }}</p>
-    </div>
-    {% endfor %}
-
 </body>
 </html>
