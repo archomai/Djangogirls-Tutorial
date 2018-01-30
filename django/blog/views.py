@@ -19,3 +19,16 @@ def post_list(request):
 
     #'blog/post_list.html'템플릿 파일을 이용해 http프로토콜로 응답'
     return render(request, 'blog/post_list.html')
+
+
+def post_detail(request):
+    """
+    localhost:8000/detail/ 로 온 요청을
+    'blog/post_detail.html'을 reder한 결과를 리턴
+
+    urls, views, template을 모두 작성해야 함
+
+    :param request:
+    :return:
+    """
+    return render(request, 'blog/post_detail.html')
