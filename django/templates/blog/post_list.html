@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="ko">
 <head>
@@ -5,24 +6,22 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>DjangoGirls Tutoral</title>
-    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/static/css/blog.css">
+    <title>DjangoGirls Tutorial</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
 </head>
 <body>
-    <div class="container">
-        <div>
+    <div class="header">
+        <div class="container">
             <h1><a href="">Django Girls Blog</a></h1>
-            {% for post in posts %}
-            <div>{{ post.title }}</div>
-            {% endfor %}
         </div>
-
+    </div>
+    <div class="container">
         {% for post in posts %}
-        <div>
-            <p>published: {{ post.published_data }}</p>
-            <h2><a href="">{{ post.title }} </a></h2>
-            <p>{{ post.content | linebreaksbr | truncatewords:30 }}</p>
+        <div class="post">
+            <p class="post-date">published: {{ post.published_date }}</p>
+            <h2 class="post-title"><a href="">{{ post.title }}</a></h2>
+            <p class="post-content">{{ post.content|linebreaksbr|truncatewords:30 }}</p>
         </div>
         {% endfor %}
     </div>
