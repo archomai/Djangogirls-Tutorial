@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from .models import Post
 
 
 def post_list(request):
@@ -15,10 +16,21 @@ def post_list(request):
     # 8. 함수의 실행 결과(리턴값)를 브라우저로 다시 전달
 
     # HTTP프로토콜로 텍스트 데이터 응답을 반환
-    # return HttpRespose('
+    # return HttpResponse('<html></html>
+
+    posts = Post.objects.all()
+    # render()함수에 전달할 dict객체 생성
+    context = {
+        'posts': posts,
+    }
+    return render(
+        request=request,
+        template_name='blog/post_list.html',
+        context=context,
+    )
 
     #'blog/post_list.html'템플릿 파일을 이용해 http프로토콜로 응답'
-    return render(request, 'blog/post_list.html')
+    # return render(request, 'blog/post_list.html')
 
 
 def post_detail(request):
