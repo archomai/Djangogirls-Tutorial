@@ -36,3 +36,8 @@ h2 {
     max-height: 190px;
     overflow: hidden;
 }
+
+.post > .post-content.full {
+    max-height: initial;
+    overflow: initial;
+}
