@@ -14,9 +14,11 @@
     <div class="header">
         <div class="container">
             <h1><a href="{% url 'post-list' %}">Django Girls Blog</a></h1>
+            <a href="{% url 'post-add' %}" class="btn btn-primary">글 작성</a>
         </div>
     </div>
     <div class="container">
+        <h2>{% block title %}{% endblock %}</h2>
         {% block content %}
         {% endblock %}
     </div>

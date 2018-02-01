@@ -42,3 +42,14 @@ def post_detail(request, pk):
         template_name='blog/post_detail.html',
         context=context,
     )
+
+
+def post_add(request):
+    # localhost:8000/add 로 접근시
+    # 이뷰가 실행 되어서 Post and page 라는 문구를 보여주도록 urls 작성
+    # httpResponse가 아니라 blog/post_add.html을 출력
+    # post_add.html은 base.html을 확장, title(h2)부분에 'Post add'라고 출력
+    return render(
+        request=request,
+        template_name='blog/post_add.html',
+    )
