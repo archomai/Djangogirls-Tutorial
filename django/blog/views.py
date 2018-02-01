@@ -96,8 +96,9 @@ def post_delete(request, pk):
     :return:
     """
     # pk에 해당하는 post를 삭제
-    post = Post.objects.get(pk=pk)
-    post.delete()
+    if request.method == 'POST':
+        post = Post.objects.get(pk=pk)
+        post.delete()
 
-    # 이후 post-list 라는 URL name 을 갖는 view로 redirect
-    return redirect('post-list')
+        # 이후 post-list 라는 URL name 을 갖는 view로 redirect
+        return redirect('post-list')
