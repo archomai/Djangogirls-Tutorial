@@ -72,7 +72,7 @@ def post_edit(request, pk):
     post = Post.objects.get(pk=pk)
     # 만약 POST매서드 요청일 경우
     if request.method == "POST":
-        # post의 제목/내용을 전송받은 
+        # post의 제목/내용을 전송받은 값으로 수정
         post.title = request.POST['title']
         post.content = request.POST['content']
         post.save()
@@ -87,7 +87,7 @@ def post_edit(request, pk):
 
     return render(
         request=request,
-        template_name='blog/post_edit.html',
+        template_name='blog/post_add_edit.html',
         context=context
     )
 
@@ -119,7 +119,7 @@ def post_add(request):
         # return HttpResponse(f'{post.pk} {post.title} {post.content}')
     else:
         # 요청의 method가 GET일때
-        return render(request, 'blog/post_add.html')
+        return render(request, 'blog/post_add_edit.html')
 
 
 def post_delete(request, pk):
