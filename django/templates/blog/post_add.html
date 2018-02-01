@@ -2,3 +2,26 @@
 
 {% block title %}Post Add{% endblock %}
 
+{% block content %}
+
+<!--name이 title인 input요소와 -->
+<!--name이 content인 textarea요소,-->
+<!--type이 submit인 button요소를 -->
+
+<!--하나의 form 요소 안에 배치 -->
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="title">제목</label>
+        <input id="title" type="text" name="title" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="content">내용</label>
+        <textarea name="content" id="content" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">작성하기</button>
+</form>
+
+{% endblock %}
