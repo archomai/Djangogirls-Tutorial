@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Post
 
 
@@ -49,7 +49,55 @@ def post_add(request):
     # 이뷰가 실행 되어서 Post and page 라는 문구를 보여주도록 urls 작성
     # httpResponse가 아니라 blog/post_add.html을 출력
     # post_add.html은 base.html을 확장, title(h2)부분에 'Post add'라고 출력
-    return render(
-        request=request,
-        template_name='blog/post_add.html',
-    )
+    if request.method == 'POST':
+
+        # 요청의 method가 POST일때
+        # HttpResponse로 POST요청을 담겨온
+        # title과 content를 합친 문자열 데이터를 보여줌
+        title = request.POST['title']
+        content = request.POST['content']
+        # ORM을 사용해서 title과 content에 해당하는 POST생성
+        post = Post.objects.create(
+            author=request.user,
+            title=title,
+            content=content,
+        )
+        # post-detail이라는 URL name을 가진 뷰로
+        # 리디렉션 요청을 보냄
+        # 이 때 post-detail URL name으로 특정 URL을 만드려면
+        # pk 값이 필요함으로 키워드 인수로 해당 값을 넘겨준다
+        return redirect('post-detail', pk=post.pk)
+
+        # return HttpResponse(f'{post.pk} {post.title} {post.content}')
+    else:
+        # 요청의 method가 GET일때
+        return render(request, 'blog/post_add.html')
+
+
+def post_delete(request, pk):
+    """
+    post_detail의 구조를 참조해서
+    pk에 해당하는 post를 삭제하는 view를 구현하고 url과 연결
+    pk가 3이면 url은 "/3/delete/"
+    이 view는 POST매서드에 대해서만 처리한다 (request.metho = "POST")
+
+    삭제코드
+        post = Post.objects.get(pk=pk)
+        post.delete()
+
+    삭제 후에는 post-list로 redirect (post_add()를 참조)
+
+    1. post_delete() view함수의 동작을 구현
+    2. post_delete view와 연결될 urls를 blog/urls.py에 구현
+    3. post_delete로 연결된 URL을 post_detail.html의 form에 작석
+        csrf_token사용
+        action의 위치가 요청을 보낼 URL임
+    :param request:
+    :return:
+    """
+    # pk에 해당하는 post를 삭제
+    post = Post.objects.get(pk=pk)
+    post.delete()
+
+    # 이후 post-list 라는 URL name 을 갖는 view로 redirect
+    return redirect('post-list')
