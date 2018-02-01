@@ -10,12 +10,15 @@ class Post(models.Model):
 
     title = models.CharField(max_length=200)
     content = models.TextField(blank=True)
-    created_data = models.DateTimeField(
+    created_date = models.DateTimeField(
         default=timezone.now
     )
     published_data = models.DateTimeField(
         blank=True, null=True
     )
+
+    class Meta:
+        ordering = ['-created_date']
 
     def publish(self):
         self.published_data = timezone.now()

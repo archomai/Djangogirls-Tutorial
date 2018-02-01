@@ -18,7 +18,9 @@ def post_list(request):
     # HTTP프로토콜로 텍스트 데이터 응답을 반환
     # return HttpResponse('<html></html>
 
-    posts = Post.objects.all()
+    # 구글검색 : django model order recently created in view
+    # order_by
+    posts = Post.objects.order_by('-created_date')
     # render()함수에 전달할 dict객체 생성
     context = {
         'posts': posts,
@@ -41,6 +43,52 @@ def post_detail(request, pk):
         request=request,
         template_name='blog/post_detail.html',
         context=context,
+    )
+
+def post_edit(request, pk):
+    """
+    1. pk에 해당하는 Post인스턴스를
+        context라는 dict에 'post'키에 할당
+        위에서 생성한 dict는 render의 context에 전달
+        사용하는 템플릿은 'blog/post_add.html'을 재사용
+            HTML새로 만들지 말고 있더 html을 그냥 할당
+    2. url은 /3/edit/ <- 에 매칭되도록 urls.py작성
+    3. 이 위치로 올수 있는 a 요소를 post_detail.html에 작성 (form 아님)
+
+    - request.method가 POST일 때는 request.POST에 있는 데이터를 이용해서
+    pk에 해당하는 Post인스턴스의 값을 수정, 이후 post-detail로 redirect
+        값을 수정하는 코드
+            post = Post.objects.get(pk=pk)
+            post.title = <새문자열>
+            post.content = <새 문자열>
+            post.save() -< DB에 업데이트 됨
+
+    - request. method가 GET일 때는 현재 아래에 있는 로직을 실행
+    :param request:
+    :param pk:
+    :return:
+    """
+    # 현재 URL (pk가 3일 경우 /3/edit/)에 전달된 pkdp goekdgksms
+    post = Post.objects.get(pk=pk)
+    # 만약 POST매서드 요청일 경우
+    if request.method == "POST":
+        # post의 제목/내용을 전송받은 
+        post.title = request.POST['title']
+        post.content = request.POST['content']
+        post.save()
+
+        return redirect('post-detail', pk=post.pk)
+
+    # GET매서드 요청일 경우
+    post = Post.objects.get(pk=pk)
+    context = {
+        'post' : post,
+    }
+
+    return render(
+        request=request,
+        template_name='blog/post_edit.html',
+        context=context
     )
 
 
@@ -98,7 +146,9 @@ def post_delete(request, pk):
     # pk에 해당하는 post를 삭제
     if request.method == 'POST':
         post = Post.objects.get(pk=pk)
-        post.delete()
-
-        # 이후 post-list 라는 URL name 을 갖는 view로 redirect
-        return redirect('post-list')
+        # 삭제 요청한 user와 post의 author가 같을때만 해당 post를 삭제
+        if request.user == post.author:
+            post.delete()
+            # 이후 post-list 라는 URL name 을 갖는 view로 redirect
+            return redirect('post-list')
+        return redirect('post-detail', pk=post.pk)
